@@ -1,6 +1,6 @@
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import requests
@@ -72,8 +72,7 @@ def save_raw_batch(payload: dict) -> Path:
     """Save the raw API response together with batch metadata."""
 
     # Use UTC for batch identification and ingestion timestamps.
-    ingested_at = datetime.now(timezone.utc)
-
+    ingested_at = datetime.now(UTC)
     batch_id = ingested_at.strftime("%Y%m%dT%H%M%S%fZ")
 
     batch = {
