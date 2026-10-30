@@ -1,0 +1,20 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: weather-clickhouse
+    ports:
+      - "8123:8123" # HTTP port (used by dbt and web clients)
+      - "9000:9000" # Native port (used by Python clients)
+    environment:
+      CLICKHOUSE_DB: weather_warehouse
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+
+volumes:
+  clickhouse_data:
