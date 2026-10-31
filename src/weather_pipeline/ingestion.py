@@ -15,22 +15,37 @@ logger = logging.getLogger(__name__)
 # Project configuration
 API_URL = "https://api.open-meteo.com/v1/forecast"
 
-LOCATION = {
-    "location_id": "kochi",
-    "city": "Kochi",
-    "latitude": 9.9312,
-    "longitude": 76.2673,
-}
+LOCATIONS = [
+    {
+        "location_id": "kochi",
+        "city": "Kochi",
+        "latitude": 9.9312,
+        "longitude": 76.2673,
+    },
+    {
+        "location_id": "bengaluru",
+        "city": "Bengaluru",
+        "latitude": 12.9716,
+        "longitude": 77.5946,
+    },
+    {
+        "location_id": "delhi",
+        "city": "Delhi",
+        "latitude": 28.6139,
+        "longitude": 77.2090,
+    }
+]
 
-RAW_DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "raw"
+# 2. Updated path logic to account for moving the file into the weather_pipeline subfolder
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+RAW_DATA_DIR = BASE_DIR / "data" / "raw"
 
-
-def fetch_weather() -> dict:
-    """Fetch hourly weather forecasts for Kochi."""
+def fetch_weather(location: dict) -> dict:
+    """Fetch hourly weather forecasts for the specified location."""
 
     params = {
-        "latitude": LOCATION["latitude"],
-        "longitude": LOCATION["longitude"],
+        "latitude": location["latitude"],
+        "longitude": location["longitude"],
         "hourly": [
             "temperature_2m",
             "relative_humidity_2m",
@@ -41,7 +56,7 @@ def fetch_weather() -> dict:
         "timezone": "Asia/Kolkata",
     }
 
-    logger.info("Requesting weather data for %s", LOCATION["city"])
+    logger.info("Requesting weather data for %s", location["city"])
 
     response = requests.get(
         API_URL,
@@ -51,7 +66,6 @@ def fetch_weather() -> dict:
 
     # Raise an exception if the API returns an HTTP error.
     response.raise_for_status()
-
     payload = response.json()
 
     # Check that the response contains the expected structure.
@@ -68,19 +82,19 @@ def fetch_weather() -> dict:
     return payload
 
 
-def save_raw_batch(payload: dict) -> Path:
+def save_raw_batch(payload: dict, location: dict) -> Path:
     """Save the raw API response together with batch metadata."""
 
     # Use UTC for batch identification and ingestion timestamps.
     ingested_at = datetime.now(UTC)
-    batch_id = ingested_at.strftime("%Y%m%dT%H%M%S%fZ")
-
+# Inject the city ID into the filename so they don't overwrite each other
+    batch_id = f"{location['location_id']}_{ingested_at.strftime('%Y%m%dT%H%M%S%fZ')}"
     batch = {
         "batch_id": batch_id,
         "ingested_at_utc": ingested_at.isoformat(),
         "source": "Open-Meteo",
         "attribution": "Weather data provided by Open-Meteo",
-        "location": LOCATION,
+        "location": location,
         "response": payload,
     }
 
@@ -101,16 +115,21 @@ def save_raw_batch(payload: dict) -> Path:
 def main() -> None:
     """Execute one batch ingestion."""
 
+# 3. Loop through the list and process each city one by one
+for location in LOCATIONS:
     try:
-        payload = fetch_weather()
-        output_file = save_raw_batch(payload)
+        # We now pass the specific 'location' dictionary into our functions
+        payload = fetch_weather(location)
+        output_file = save_raw_batch(payload, location)
 
-        logger.info("Batch ingestion completed: %s", output_file.name)
+        logger.info("Batch ingestion completed for %s\n", location["city"])
 
     except (requests.RequestException, ValueError, OSError):
-        logger.exception("Weather ingestion failed")
-        raise SystemExit(1)
+        logger.exception("Weather ingestion failed for %s", location["city"])
+        # 4. Use 'continue' instead of exiting, so if one city fails, the others still run!
+        continue
 
 
 if __name__ == "__main__":
     main()
+    
