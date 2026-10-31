@@ -6,9 +6,9 @@ services:
       - "8123:8123" # HTTP port (used by dbt and web clients)
       - "9000:9000" # Native port (used by Python clients)
     environment:
-      CLICKHOUSE_DB: weather_warehouse
       CLICKHOUSE_USER: ${CLICKHOUSE_USER}
       CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
     volumes:
       - clickhouse_data:/var/lib/clickhouse
     ulimits:
