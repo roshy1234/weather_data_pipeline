@@ -13,3 +13,4 @@ data/processed/
 logs/
 weather_transform/target/
 weather_transform/dbt_packages/
+weather_transform/dbt_internal_packages/
