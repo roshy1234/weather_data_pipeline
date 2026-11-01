@@ -2,6 +2,7 @@ services:
   clickhouse:
     image: clickhouse/clickhouse-server:latest
     container_name: weather-clickhouse
+    restart: unless-stopped
     ports:
       - "8123:8123" # HTTP port (used by dbt and web clients)
       - "9000:9000" # Native port (used by Python clients)
@@ -18,3 +19,4 @@ services:
 
 volumes:
   clickhouse_data:
+
