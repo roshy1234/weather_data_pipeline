@@ -9,7 +9,8 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['kochi', 'bengaluru', 'delhi']
+              arguments:
+                values: ['kochi', 'bengaluru', 'delhi']
       
       - name: forecast_time
         description: "The exact hour of the forecast."
