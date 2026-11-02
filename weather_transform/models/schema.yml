@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: stg_hourly_weather
+    description: "Cleaned, deduplicated hourly weather data."
+    columns:
+      - name: location_id
+        description: "The city identifier."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['kochi', 'bengaluru', 'delhi']
+      
+      - name: forecast_time
+        description: "The exact hour of the forecast."
+        tests:
+          - not_null
+      
+      - name: temperature_celsius
+        tests:
+          - not_null
