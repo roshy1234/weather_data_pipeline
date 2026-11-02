@@ -11,12 +11,38 @@ models:
           - accepted_values:
               arguments:
                 values: ['kochi', 'bengaluru', 'delhi']
-      
+          
       - name: forecast_time
         description: "The exact hour of the forecast."
         tests:
           - not_null
-      
+          
       - name: temperature_celsius
         tests:
           - not_null
+
+  - name: dim_location
+    description: "Dimension table containing static city details."
+    columns:
+      - name: location_id
+        description: "Primary key for the location."
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_weather
+    description: "Fact table containing numeric weather measurements."
+    columns:
+      - name: weather_fact_id
+        description: "Unique identifier for each weather fact."
+        tests:
+          - unique
+          - not_null
+      - name: location_id
+        description: "Foreign key linking to dim_location."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_location')
+                field: location_id
