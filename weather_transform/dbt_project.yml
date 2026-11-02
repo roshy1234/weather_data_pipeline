@@ -27,3 +27,5 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   weather_transform:
     +materialized: table
+    marts:
+      +schema: analytics
