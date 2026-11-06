@@ -26,7 +26,7 @@ ARCHIVE_DIR = BASE_DIR / "data" / "processed"
 def get_db_client():
     """Establish a connection to the local ClickHouse instance."""
     return clickhouse_connect.get_client(
-        host="localhost",
+        host="weather-clickhouse",
         port=8123,
         username=os.getenv("CLICKHOUSE_USER"),
         password=os.getenv("CLICKHOUSE_PASSWORD"),
