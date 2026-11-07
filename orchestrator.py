@@ -47,4 +47,8 @@ def main_orchestrator():
     print("Pipeline finished successfully!")
 
 if __name__ == "__main__":
-    main_orchestrator()
+    main_orchestrator.serve(
+        name="daily-weather-elt",
+        cron="0 12 * * *",
+        tags=["production", "weather"]
+    )
