@@ -31,6 +31,15 @@ def run_dbt_transformations():
     )
     print("dbt transformations complete!")
 
+@task
+def run_dbt_tests():
+    print("4. Triggering dbt data quality tests...")
+    subprocess.run(
+        ["dbt", "test", "--project-dir", "weather_transform"], 
+        check=True
+    )
+    print("dbt tests passed!")
+
 @flow(name="Decoupled Weather ELT Pipeline", log_prints=True)
 def main_orchestrator():
     print("Starting ELT orchestrator...")
@@ -41,8 +50,11 @@ def main_orchestrator():
     # 2. Load (Push JSON to ClickHouse)
     run_python_loader()
     
-    # 3. Transform (Run SQL via dbt)
+    # 3. Transform (Build tables)
     run_dbt_transformations()
+    
+    # 4. Test (Verify data quality)
+    run_dbt_tests()
     
     print("Pipeline finished successfully!")
 
