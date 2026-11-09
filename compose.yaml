@@ -23,9 +23,12 @@ services:
       - "3000:3000"
     environment:
       - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
+    volumes:
+      - grafana-storage:/var/lib/grafana
     restart: unless-stopped
     # If you have a custom network defined for ClickHouse, add it here too
 
 volumes:
   clickhouse_data:
+  grafana-storage:
 
