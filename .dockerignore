@@ -1,0 +1,7 @@
+venv/
+logs/
+__pycache__/
+.env
+start_worker.sh
+.git/
+.github/
