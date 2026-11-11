@@ -1,0 +1,11 @@
+weather_transform:
+  target: dev
+  outputs:
+    dev:
+      type: clickhouse
+      schema: weather_warehouse
+      host: "{{ env_var('CLICKHOUSE_HOST', 'weather-clickhouse') }}"
+      port: 8123
+      user: "{{ env_var('CLICKHOUSE_USER') }}"
+      password: "{{ env_var('CLICKHOUSE_PASSWORD') }}"
+      secure: false
