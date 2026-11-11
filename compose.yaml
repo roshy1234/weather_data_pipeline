@@ -28,6 +28,15 @@ services:
     restart: unless-stopped
     # If you have a custom network defined for ClickHouse, add it here too
 
+  prefect-worker:
+    build: .
+    container_name: prefect_weather_worker
+    env_file:
+      - .env
+    depends_on:
+      - clickhouse
+    restart: unless-stopped
+
 volumes:
   clickhouse_data:
   grafana-storage:
