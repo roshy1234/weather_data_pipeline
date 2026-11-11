@@ -26,7 +26,7 @@ ARCHIVE_DIR = BASE_DIR / "data" / "processed"
 def get_db_client():
     """Establish a connection to the local ClickHouse instance."""
     return clickhouse_connect.get_client(
-        host="clickhouse",  # Use the service name defined in docker-compose.yml
+        host=os.getenv("CLICKHOUSE_HOST"),
         port=8123,
         username=os.getenv("CLICKHOUSE_USER"),
         password=os.getenv("CLICKHOUSE_PASSWORD"),
