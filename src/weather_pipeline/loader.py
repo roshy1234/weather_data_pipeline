@@ -27,10 +27,10 @@ def get_db_client():
     """Establish a connection to the local ClickHouse instance."""
     return clickhouse_connect.get_client(
         host=os.getenv("CLICKHOUSE_HOST"),
-        port=8123,
+        port=os.getenv("CLICKHOUSE_PORT"),
         username=os.getenv("CLICKHOUSE_USER"),
         password=os.getenv("CLICKHOUSE_PASSWORD"),
-        database="weather_raw"
+        database=os.getenv("CLICKHOUSE_DB"),
     )
 
 def process_and_load_files() -> None:
