@@ -1,13 +1,11 @@
-import json
+import json  # noqa: I001
 import logging
 import os
 from datetime import UTC, datetime
 from pathlib import Path
 
 import requests
-from dotenv import load_dotenv
 
-load_dotenv()
 
 # Configure logging
 logging.basicConfig(
@@ -119,19 +117,19 @@ def save_raw_batch(payload: dict, location: dict) -> Path:
 def main() -> None:
     """Execute one batch ingestion."""
 
-# 3. Loop through the list and process each city one by one
-for location in LOCATIONS:
-    try:
-        # We now pass the specific 'location' dictionary into our functions
-        payload = fetch_weather(location)
-        output_file = save_raw_batch(payload, location)
+    # Loop through the list and process each city one by one
+    for location in LOCATIONS:
+        try:
+            # We now pass the specific 'location' dictionary into our functions
+            payload = fetch_weather(location)
+            output_file = save_raw_batch(payload, location)
 
-        logger.info("Batch ingestion completed for %s\n", location["city"])
+            logger.info("Batch ingestion completed for %s → %s", location["city"], output_file)
 
-    except (requests.RequestException, ValueError, OSError):
-        logger.exception("Weather ingestion failed for %s", location["city"])
-        # 4. Use 'continue' instead of exiting, so if one city fails, the others still run!
-        continue
+        except (requests.RequestException, ValueError, OSError):
+            logger.exception("Weather ingestion failed for %s", location["city"])
+            # Use 'continue' instead of exiting, so if one city fails, the others still run!
+            continue
 
 
 if __name__ == "__main__":
