@@ -15,4 +15,4 @@ weather_transform/target/
 weather_transform/dbt_packages/
 weather_transform/dbt_internal_packages/
 
-start_worker.sh
+weather_transform/.user.yml
