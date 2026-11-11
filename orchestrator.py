@@ -29,14 +29,14 @@ def run_python_loader():
 @task
 def run_dbt_transformations():
     print("3. Triggering dbt transformations...")
-    run_command(["dbt", "run", "--project-dir", "weather_transform"], "dbt run")
+    run_command(["dbt", "run", "--project-dir", "weather_transform", "--profiles-dir", "weather_transform"], "dbt run")
     print("dbt transformations complete!")
 
 
 @task
 def run_dbt_tests():
     print("4. Triggering dbt data quality tests...")
-    run_command(["dbt", "test", "--project-dir", "weather_transform"], "dbt test")
+    run_command(["dbt", "test", "--project-dir", "weather_transform", "--profiles-dir", "weather_transform"], "dbt test")
     print("dbt tests passed!")
 
 
