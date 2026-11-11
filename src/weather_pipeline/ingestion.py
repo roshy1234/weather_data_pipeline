@@ -1,9 +1,13 @@
 import json
 import logging
+import os
 from datetime import UTC, datetime
 from pathlib import Path
 
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(
@@ -13,7 +17,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Project configuration
-API_URL = "https://api.open-meteo.com/v1/forecast"
+API_URL = os.getenv("API_URL")
 
 LOCATIONS = [
     {
