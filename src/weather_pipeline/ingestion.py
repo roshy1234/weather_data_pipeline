@@ -1,5 +1,6 @@
 import json  # noqa: I001
 import logging
+import sys
 import os
 from datetime import UTC, datetime
 from pathlib import Path
@@ -129,7 +130,12 @@ def main() -> None:
         except (requests.RequestException, ValueError, OSError):
             logger.exception("Weather ingestion failed for %s", location["city"])
             # Use 'continue' instead of exiting, so if one city fails, the others still run!
+            error_occured = True
             continue
+    
+    if error_occured:
+        logger.error("Ingestion completed with errors. Failing the pipeline.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
