@@ -1,8 +1,10 @@
-import clickhouse_connect
 import os
+
+import clickhouse_connect
 import streamlit as st  # type: ignore[import-not-found]
 from dotenv import load_dotenv
 
+load_dotenv()
 
 
 st.title("🌤️ Weather Analytics Hub")
