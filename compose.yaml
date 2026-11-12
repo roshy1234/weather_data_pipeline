@@ -33,6 +33,7 @@ services:
     container_name: prefect_weather_worker
     env_file:
       - .env
+    command: python orchestrator.py
     depends_on:
       - clickhouse
     restart: unless-stopped

@@ -36,4 +36,4 @@ jobs:
           PREFECT_WORKSPACE: ${{ secrets.PREFECT_WORKSPACE }}
         run: |
           prefect cloud login --key $PREFECT_API_KEY --workspace $PREFECT_WORKSPACE
-          prefect deploy --all
+          prefect deploy orchestrator.py:your_flow_function --name "Decoupled Weather ELT Pipeline" --pool "your-pool-name"
