@@ -15,7 +15,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Project configuration
-API_URL = os.getenv("API_URL")
+API_URL = os.getenv("WEATHER_API_URL")
 
 LOCATIONS = [
     {
