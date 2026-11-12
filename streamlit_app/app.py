@@ -1,11 +1,20 @@
 import clickhouse_connect
+import os
 import streamlit as st  # type: ignore[import-not-found]
+from dotenv import load_dotenv
+
+
 
 st.title("🌤️ Weather Analytics Hub")
 
 @st.cache_data(ttl=300)
 def load_data():
-    client = clickhouse_connect.get_client(host='clickhouse', port=8123)
+    client = clickhouse_connect.get_client(
+        host=os.getenv("CLICKHOUSE_HOST"),
+        port=os.getenv("CLICKHOUSE_PORT"),
+        username=os.getenv("CLICKHOUSE_USER"),
+        password=os.getenv("CLICKHOUSE_PASSWORD")
+    )
     
     # Join fact and dim tables to get the human-readable city_name
     query = """
