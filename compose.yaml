@@ -38,6 +38,14 @@ services:
       - clickhouse
     restart: unless-stopped
 
+  streamlit:
+    build: ./streamlit_app
+    container_name: weather_dashboard
+    ports:
+      - "8501:8501"
+    depends_on:
+      - clickhouse
+
 volumes:
   clickhouse_data:
   grafana-storage:
