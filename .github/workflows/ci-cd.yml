@@ -29,11 +29,3 @@ jobs:
       - name: Lint Code
         # Catches syntax errors and undefined names before deployment
         run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-
-      - name: Authenticate & Deploy to Prefect Cloud
-        env:
-          PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
-          PREFECT_WORKSPACE: ${{ secrets.PREFECT_WORKSPACE }}
-        run: |
-          prefect cloud login --key $PREFECT_API_KEY --workspace $PREFECT_WORKSPACE
-          prefect deploy orchestrator.py:your_flow_function --name "Decoupled Weather ELT Pipeline" --pool "your-pool-name"
