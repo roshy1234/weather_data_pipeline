@@ -22,3 +22,10 @@ def load_data():
         LIMIT 100
     """
     return client.query_df(query)
+
+try:
+    df = load_data()
+    st.success("Successfully connected to ClickHouse!")
+    st.dataframe(df)
+except Exception as e:  # noqa: BLE001
+    st.error(f"Failed to connect: {e}")
