@@ -117,7 +117,7 @@ def save_raw_batch(payload: dict, location: dict) -> Path:
 
 def main() -> None:
     """Execute one batch ingestion."""
-
+    error_occured = False
     # Loop through the list and process each city one by one
     for location in LOCATIONS:
         try:
