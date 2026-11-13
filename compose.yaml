@@ -31,6 +31,8 @@ services:
   prefect-worker:
     build: .
     container_name: prefect_weather_worker
+    volumes:
+      - ./data:/app/data
     env_file:
       - .env
     command: python orchestrator.py
