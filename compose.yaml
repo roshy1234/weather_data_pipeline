@@ -29,7 +29,7 @@ services:
     # If you have a custom network defined for ClickHouse, add it here too
 
   prefect-worker:
-    build: .
+    image: roshyjamz/weather-worker:latest
     container_name: prefect_weather_worker
     volumes:
       - ./data:/app/data
@@ -41,7 +41,7 @@ services:
     restart: unless-stopped
 
   streamlit:
-    build: ./streamlit_app
+    image: roshyjamz/weather-dashboard:latest
     container_name: weather_dashboard
     ports:
       - "8501:8501"
