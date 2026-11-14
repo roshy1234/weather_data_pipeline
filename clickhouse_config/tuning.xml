@@ -1,0 +1,10 @@
+<clickhouse>
+    <!-- Shrink mark cache to 500MB -->
+    <mark_cache_size>536870912</mark_cache_size>
+    
+    <!-- Disable background log tables -->
+    <text_log remove="1"/>
+    <metric_log remove="1"/>
+    <asynchronous_metric_log remove="1"/>
+    <trace_log remove="1"/>
+</clickhouse>
