@@ -35,7 +35,11 @@ services:
     volumes:
       - grafana-storage:/var/lib/grafana
     restart: unless-stopped
-
+    deploy:
+      resources:
+        limits:
+          # Hard limit to prevent it from crashing the 1GB cloud server
+          memory: 250M
     # If you have a custom network defined for ClickHouse, add it here too
 
   prefect-worker:
