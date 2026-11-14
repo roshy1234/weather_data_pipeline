@@ -23,15 +23,23 @@ services:
         soft: 262144
         hard: 262144
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana-oss:latest
     container_name: weather-grafana
     ports:
       - "3000:3000"
     environment:
+      # Installs the official ClickHouse data source plugin on startup
       - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
+      # Forces the Go garbage collector to keep memory low
+      - GOMEMLIMIT=100mbb
     volumes:
       - grafana-storage:/var/lib/grafana
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          # Hard limit to prevent it from crashing the 1GB cloud server
+          memory: 150M
     # If you have a custom network defined for ClickHouse, add it here too
 
   prefect-worker:

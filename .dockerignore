@@ -23,3 +23,6 @@ data/
 compose.yaml
 README.md
 LICENSE
+
+# Database configurations
+clickhouse_config/
